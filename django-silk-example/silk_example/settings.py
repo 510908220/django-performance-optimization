@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 """
 Django settings for silk_example project.
 
@@ -37,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'silk',
+    'app'
 ]
 
 MIDDLEWARE = [
@@ -47,6 +51,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'silk.middleware.SilkyMiddleware'
 ]
 
 ROOT_URLCONF = 'silk_example.urls'
@@ -75,8 +81,13 @@ WSGI_APPLICATION = 'silk_example.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        "HOST": '172.17.0.6',
+        'PORT': 3306,
+        'USER': 'root',
+        "PASSWORD": '!@#$ESZAQ',
+        'NAME': 'test',
+        'TEST': {'CHARSET': 'UTF8'}
     }
 }
 
@@ -118,3 +129,23 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# silk
+SILKY_AUTHENTICATION = True  # User must login
+SILKY_AUTHORISATION = True  # User must have permissions
+
+
+def SILKY_PERMISSIONS(user): return user.is_superuser
+
+
+SILKY_META = True  # silk保存到数据库耗时
+SILKY_PYTHON_PROFILER = True
+SILKY_MAX_REQUEST_BODY_SIZE = -1  # Silk takes anything <0 as no limit
+SILKY_MAX_RESPONSE_BODY_SIZE = 1024  # If response body>1024kb, ignore
+
+
+SILKY_MAX_RECORDED_REQUESTS = 500  # 限制记录数，避免数据库持续增长
+SILKY_MAX_RECORDED_REQUESTS_CHECK_PERCENT = 100
+# 实际呢, 就是当 10 / 100 >= random.random() 时,清除50条记录.
+# 这俩配置是一起生效的.
