@@ -9,6 +9,10 @@ name = "pypi"
 
 django = "*"
 django-silk = "*"
+djangorestframework = "*"
+django-filter = "*"
+mysqlclient = "*"
+ipython = "*"
 
 
 [dev-packages]

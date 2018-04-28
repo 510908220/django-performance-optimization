@@ -25,7 +25,7 @@ class House(BaseModel):
         ('concentrated', '集中供暖'),
         ('selfburning', '自烧锅炉'),
     )
-    city = models.ForeignKey(City, related_name='houses')
+    city = models.ForeignKey(City, related_name='houses',on_delete=models.CASCADE)
     name = models.CharField(max_length=30,  unique=True)
     price = models.PositiveIntegerField()
     address = models.CharField(max_length=255)  # 地址
